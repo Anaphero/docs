@@ -1,9 +1,9 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Starter Kit",
+  "name": "Anaphero API",
   "logo": {
-    "dark": "/logo/dark.svg",
-    "light": "/logo/light.svg"
+    "dark": "https://d2d1vpa6c3q6ni.cloudfront.net/logo-white.png",
+    "light": "https://d2d1vpa6c3q6ni.cloudfront.net/logo-with-name.png"
   },
   "favicon": "/favicon.svg",
   "colors": {
@@ -30,17 +30,18 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": ["introduction", "quickstart", "development"]
+      "pages": ["introduction", "quickstart"]
     },
     {
       "group": "Essentials",
       "pages": [
-        "essentials/markdown",
-        "essentials/code",
-        "essentials/images",
-        "essentials/settings",
-        "essentials/navigation",
-        "essentials/reusable-snippets"
+        "essentials/Clinical Task Types",
+        "essentials/Administrative Task Types",
+        "essentials/How Task Scheduling Works",
+        "essentials/Getting Task Results",
+        "essentials/Additional Observability",
+        "essentials/HIPAA Compliance and BAAs",
+        "essentials/Obtaining Communication Permissions from Patients"
       ]
     },
     {
@@ -48,12 +49,28 @@
       "pages": ["api-reference/introduction"]
     },
     {
-      "group": "Endpoint Examples",
+      "group": "Health",
+      "pages": ["api-reference/health/get"]
+    },
+    {
+      "group": "Task Definitions",
       "pages": [
-        "api-reference/endpoint/get",
-        "api-reference/endpoint/create",
-        "api-reference/endpoint/delete"
+        "api-reference/task-definitions/get",
+        "api-reference/task-definitions/get-single"
       ]
+    },
+    {
+      "group": "Call",
+      "pages": [
+        "api-reference/call/get",
+        "api-reference/call/get-single",
+        "api-reference/call/create",
+        "api-reference/call/delete"
+      ]
+    },
+    {
+      "group": "Phone Number",
+      "pages": ["api-reference/phone/get"]
     }
   ],
   "footerSocials": {

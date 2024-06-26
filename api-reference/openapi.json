@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "http://api.anaphero.com/v1"
     }
   ],
   "security": [
@@ -19,6 +19,234 @@
     }
   ],
   "paths": {
+    "/health": {
+      "get": {
+        "description": "Returns the health status of the API",
+        "responses": {
+          "200": {
+            "description": "API is healthy",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task-definition": {
+      "get": {
+        "description": "Returns all task definitions available to your organization",
+        "responses": {
+          "200": {
+            "description": "Task definition",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TaskDefinition"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/task-definition-single/{taskId}": {
+      "get": {
+        "description": "Returns all task definitions available to your organization",
+        "parameters": [
+          {
+            "name": "taskId",
+            "in": "path",
+            "description": "ID of the task you wish to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task definition",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaskDefinition"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/call": {
+      "get": {
+        "description": "Returns all calls available to your organization",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of results to return",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "taskId",
+            "in": "query",
+            "description": "The task ID to filter the calls",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "The type of call to filter by",
+            "schema": {
+              "enum": ["inbound", "outbound"],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List Calls",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Call"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Create new call",
+        "requestBody": {
+          "description": "Call to add to the store",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCall"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Call response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Call"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/call/{callId}": {
+      "get": {
+        "description": "Returns a single call based on the callId supplied",
+        "parameters": [
+          {
+            "name": "callId",
+            "in": "path",
+            "description": "ID of call to return",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Call response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Call"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "description": "Deletes a single call based on the callId supplied",
+        "parameters": [
+          {
+            "name": "callId",
+            "in": "path",
+            "description": "ID of call to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Call deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Call"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/phone-number": {
+      "get": {
+        "description": "Returns all phone numbers available to your organization",
+        "parameters": [
+          {
+            "name": "number",
+            "in": "query",
+            "description": "The phone number to filter by",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Phone number",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PhoneNumber"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/plants": {
       "get": {
         "description": "Returns all plants from the system that the user has access to",
@@ -132,10 +360,201 @@
   },
   "components": {
     "schemas": {
+      "PhoneNumber": {
+        "required": ["phoneNumberId", "number", "telephonyProvider"],
+        "type": "object",
+        "properties": {
+          "phoneNumberId": {
+            "description": "The unique id for the phone number",
+            "type": "string"
+          },
+          "number": {
+            "description": "The phone number with country code",
+            "type": "string"
+          },
+          "telephonyProvider": {
+            "description": "The telephony provider for the phone number",
+            "type": "string"
+          }
+        }
+      },
+      "TaskDefinition": {
+        "type": "object",
+        "properties": {
+          "taskId": {
+            "description": "The unique id for the task definition",
+            "type": "string"
+          },
+          "taskName": {
+            "description": "The human-friendly name of the task",
+            "type": "string"
+          },
+          "taskDescription": {
+            "description": "The description of the task and what it does",
+            "type": "string"
+          },
+          "taskParameters": {
+            "description": "The parameters that will be passed to the task. Each task has its own parameters that help customze the task's execution",
+            "type": "object"
+          },
+          "maxDuration": {
+            "description": "The maximum duration in seconds that the task can run for",
+            "type": "integer"
+          },
+          "transcriber": {
+            "description": "The transcriber configuration used for this task definition",
+            "type": "object"
+          },
+          "voice": {
+            "description": "The voice configuration used for this task definition",
+            "type": "object"
+          },
+          "languageModel": {
+            "description": "The language model configuration for this task definition",
+            "type": "object"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time the task definition was created"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time the task definition was last updated"
+          }
+        }
+      },
+      "CreateCall": {
+        "required": ["taskId", "destinationNumberId"],
+        "type": "object",
+        "properties": {
+          "name": {
+            "description": "The name of the call for your own reference",
+            "type": "string",
+            "maxLength": 50
+          },
+          "taskId": {
+            "description": "The taskId of the task that will be executed on this call",
+            "type": "string"
+          },
+          "sourcePhoneNumberId": {
+            "description": "The phoneNumberId of the phone number that will be used to make the call",
+            "type": "string"
+          },
+          "destinationPhoneNumber": {
+            "description": "The phoneNumberId of the number you would like to call",
+            "type": "string"
+          },
+          "taskParameters": {
+            "description": "The parameters that will be passed to the task. Each task has its own parameters that help customze the task's execution",
+            "type": "object"
+          },
+          "scheduledDatetime": {
+            "description": "The date and time the call should be made. Leave blank to queue the call immediately",
+            "type": "string",
+            "format": "date-time"
+          },
+          "retryBehavior": {
+            "description": "The retry behavior for the call",
+            "type": "object",
+            "properties": {
+              "maxRetries": {
+                "description": "The maximum number of retries",
+                "type": "integer"
+              },
+              "retryInterval": {
+                "description": "The interval between retries in minutes",
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "Call": {
+        "type": "object",
+        "properties": {
+          "callId": {
+            "description": "The unique id for the call",
+            "type": "string"
+          },
+          "name": {
+            "description": "The name of the call for your own reference",
+            "type": "string",
+            "maxLength": 50
+          },
+          "type": {
+            "type": "string",
+            "description": "The type of call",
+            "enum": ["inbound", "outbound"]
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the call",
+            "enum": ["scheduled", "in-progress", "completed", "failed"]
+          },
+          "transcript": {
+            "type": "string",
+            "description": "The transcript of the call"
+          },
+          "summary": {
+            "type": "string",
+            "description": "The summary of the call"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time the call was scheduled / created"
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time the call was started"
+          },
+          "endedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date and time the call was ended"
+          },
+          "taskId": {
+            "description": "The taskId of the task that will be executed on this call",
+            "type": "string"
+          },
+          "sourcePhoneNumberId": {
+            "description": "The phoneNumberId of the phone number that will be used to make the call",
+            "type": "string"
+          },
+          "destinationPhoneNumber": {
+            "description": "The phoneNumberId of the number you would like to call",
+            "type": "string"
+          },
+          "scheduledDatetime": {
+            "description": "The date and time the call should be made. Leave blank to queue the call immediately",
+            "type": "string",
+            "format": "date-time"
+          },
+          "retryBehavior": {
+            "description": "The retry behavior for the call",
+            "type": "object",
+            "properties": {
+              "maxRetries": {
+                "description": "The maximum number of retries",
+                "type": "integer"
+              },
+              "retryInterval": {
+                "description": "The interval between retries in minutes",
+                "type": "integer"
+              }
+            }
+          },
+          "taskParameters": {
+            "description": "The parameters that will be passed to the task. Each task has its own parameters that help customze the task's execution",
+            "type": "object"
+          }
+        }
+      },
       "Plant": {
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "type": "object",
         "properties": {
           "name": {
@@ -154,9 +573,7 @@
             "$ref": "#/components/schemas/Plant"
           },
           {
-            "required": [
-              "id"
-            ],
+            "required": ["id"],
             "type": "object",
             "properties": {
               "id": {
@@ -169,10 +586,7 @@
         ]
       },
       "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+        "required": ["error", "message"],
         "type": "object",
         "properties": {
           "error": {

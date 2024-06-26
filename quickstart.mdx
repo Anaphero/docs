@@ -1,86 +1,100 @@
 ---
 title: 'Quickstart'
-description: 'Start building awesome documentation in under 5 minutes'
+description: 'Trigger your first task in under 5 minutes'
 ---
 
-## Setup your development
+## Setup your development environment
 
-Learn how to update your docs locally and and deploy them to the public.
+This section will walk you through configuring your API key and triggering your first task.
 
-### Edit and preview
+### Set up your API key
 
 <AccordionGroup>
-  <Accordion icon="github" title="Clone your docs locally">
-    During the onboarding process, we created a repository on your Github with
-    your docs content. You can find this repository on our
-    [dashboard](https://dashboard.mintlify.com). To clone the repository
-    locally, follow these
-    [instructions](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
-    in your terminal.
+  <Accordion icon='key' title='Get your API key'>
+    During your onboarding process, you should have received your developer API
+    key via secure sharing. It should look something like this: ```5394ecf5-77ec-4c1d-87b7-dddc75909462```
+
+    If you do not have an API key or need help accessing
+    it, please reach out to dev@anaphero.com
+
   </Accordion>
-  <Accordion icon="rectangle-terminal" title="Preview changes">
-    Previewing helps you make sure your changes look as intended. We built a
-    command line interface to render these changes locally. 1. Install the
-    [Mintlify CLI](https://www.npmjs.com/package/mintlify) to preview the
-    documentation changes locally with this command: ``` npm i -g mintlify ```
-    2. Run the following command at the root of your documentation (where
-    `mint.json` is): ``` mintlify dev ```
+  
+  <Accordion icon='code' title='Sending your first request'>
+    The base URL for the API is: ```https://api.anaphero.com/api/v1```
+
+    For all requests, you must add an Authorization header with a bearer token in the format ```Bearer <yourApiKey>```. Once you've set your header, you can test a GET request to our ```/health``` endpoint to test your connection like this:
+
+    ```GET https://api.anaphero.com/api/v1/health```
+
+    You should see a response that looks like:
+    ```[200] {"message": "healthy"}```
+
   </Accordion>
 </AccordionGroup>
 
-### Deploy your changes
+### Getting a phone number
+
+This section will talk you through how to list your organization's available phone numbers. These are the numbers you may use to trigger outbound phone calls.
 
 <AccordionGroup>
 
-<Accordion icon="message-bot" title="Install our Github app">
-  Our Github app automatically deploys your changes to your docs site, so you
-  don't need to manage deployments yourself. You can find the link to install on
-  your [dashboard](https://dashboard.mintlify.com). Once the bot has been
-  successfully installed, there should be a check mark next to the commit hash
-  of the repo.
-</Accordion>
-<Accordion icon="rocket" title="Push your changes">
-  [Commit and push your changes to
-  Git](https://docs.github.com/en/get-started/using-git/pushing-commits-to-a-remote-repository#about-git-push)
-  for your changes to update in your docs site. If you push and don't see that
-  the Github app successfully deployed your changes, you can also manually
-  update your docs through our [dashboard](https://dashboard.mintlify.com).
+<Accordion icon='phone' title='Listing all phone numbers'>
+  During your onboarding process, we will have configured phone numbers that are
+  available for your use. You can list your available phone numbers with this
+  request: 
+  
+  ```GET https://api.anaphero.com/api/v1/phone-number```
+
+You should see a response that looks like:
+
+`[{"phoneNumberId": "bfc1153b-975b-43da-ada8-5176abd2d012", "number": "+18847362873", "telephonyProvider": "twilio"}, ...]`
+
+Note the `id` of the phone number you wish to use--this is what you will use in your next request to tell the API to use this number.
+
 </Accordion>
 
 </AccordionGroup>
 
-## Update your docs
+### Create your first call
 
-Add content directly in your files with MDX syntax and React components. You can use any of our components, or even build your own.
+Now you're ready to trigger your first call! We are going to start by triggering a call to remind a patient that they have an appointment coming up.
 
-<CardGroup>
+We are going to use a hypothetical patient, `John Smith`, and a hypothetical appointment on `Monday, July 15th at 10am` for an `Annual Wellness Exam` with `Dr. Emily Turner` at `123 N Main St.`.
 
-<Card title="Style Your Docs" icon="paintbrush" href="/settings/global">
-  Add flair to your docs with personalized branding.
-</Card>
+For now, use your own phone number for the `destinationPhoneNumber` parameter so you can receive the call.
 
-<Card
-  title="Add API Endpoints"
-  icon="square-code"
-  href="/api-playground/configuration"
->
-  Implement your OpenAPI spec and enable API user interaction.
-</Card>
+<AccordionGroup>
 
-<Card
-  title="Integrate Analytics"
-  icon="chart-mixed"
-  href="/analytics/supported-integrations"
->
-  Draw insights from user interactions with your documentation.
-</Card>
+<Accordion icon='square-plus' title='Creating the call'>
+  A reminder call can be scheduled for `John Smith` with the following request:
 
-<Card
-  title="Host on a Custom Domain"
-  icon="browser"
-  href="/settings/custom-domain/subdomain"
->
-  Keep your docs on your own website's subdomain.
-</Card>
+```
+POST http://api.anaphero.com/v1/call
+{
+  "taskId": "98975fc0-b219-4599-b1b8-1138bd15309a",
+  "sourcePhoneNumberId": "<phoneNumberId you retrieved above>",
+  "destinationPhoneNumber": "<your phone number>",
+  "taskParameters": {
+    "patientName": "John Smith",
+    "appointmentDate": "2024-07-15T10:00:00Z",
+    "appointmentType": "Annual Wellness Exam",
+    "provider": "Dr. Emily Turner",
+    "address": "123 N Main St."
+  }
+}
+```
 
-</CardGroup>
+</Accordion>
+<Accordion icon='check' title='Receive the call'>
+  You should receive a phone call to you. Pretend to be John Smith as you interact with the voice AI. 
+</Accordion>
+<Accordion icon='clipboard' title='View the result'>
+  You can view the result of the call by making the following request:
+
+```
+GET http://api.anaphero.com/v1/call/{callId}
+```
+
+</Accordion>
+
+</AccordionGroup>
