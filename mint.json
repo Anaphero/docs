@@ -35,8 +35,7 @@
     {
       "group": "Essentials",
       "pages": [
-        "essentials/Clinical Task Types",
-        "essentials/Administrative Task Types",
+        "essentials/Task Types",
         "essentials/How Task Scheduling Works",
         "essentials/Getting Task Results",
         "essentials/Additional Observability",
