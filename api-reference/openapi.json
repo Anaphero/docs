@@ -254,7 +254,8 @@
                     "type": "object",
                     "properties": {
                       "mrn": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                       },
                       "sex": {
                         "type": "string",
