@@ -552,8 +552,8 @@
             "type": "string",
             "maxLength": 50
           },
-          "taskId": {
-            "description": "The taskId of the task that will be executed on this call",
+          "assistantId": {
+            "description": "The id of the assistant to use for the call",
             "type": "string"
           },
           "sourcePhoneNumberId": {
@@ -565,27 +565,13 @@
             "type": "string"
           },
           "taskParameters": {
-            "description": "The parameters that will be passed to the task. Each task has its own parameters that help customze the task's execution",
+            "description": "Any override setting you would like to pass into the assistant configuration.",
             "type": "object"
           },
           "scheduledDatetime": {
             "description": "The date and time the call should be made. Leave blank to queue the call immediately",
             "type": "string",
             "format": "date-time"
-          },
-          "retryBehavior": {
-            "description": "The retry behavior for the call",
-            "type": "object",
-            "properties": {
-              "maxRetries": {
-                "description": "The maximum number of retries",
-                "type": "integer"
-              },
-              "retryInterval": {
-                "description": "The interval between retries in minutes",
-                "type": "integer"
-              }
-            }
           }
         }
       },

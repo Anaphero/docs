@@ -41,12 +41,17 @@
       "pages": ["api-reference/health/get"]
     },
     {
-      "group": "Referral Workflow",
-      "pages": ["api-reference/workflow/referral/create"]
+      "group": "Call",
+      "pages": [
+        "api-reference/call/get",
+        "api-reference/call/get-single",
+        "api-reference/call/create",
+        "api-reference/call/delete"
+      ]
     },
     {
-      "group": "Call",
-      "pages": ["api-reference/call/get"]
+      "group": "Referral Workflow",
+      "pages": ["api-reference/workflow/referral/create"]
     }
   ],
   "footerSocials": {
