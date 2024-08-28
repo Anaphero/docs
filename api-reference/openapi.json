@@ -254,8 +254,7 @@
                     "type": "object",
                     "properties": {
                       "mrn": {
-                        "type": "string",
-                        "nullable": true
+                        "type": "string"
                       },
                       "sex": {
                         "type": "string",
@@ -295,7 +294,6 @@
                       }
                     },
                     "required": [
-                      "mrn",
                       "sex",
                       "firstName",
                       "lastName",
