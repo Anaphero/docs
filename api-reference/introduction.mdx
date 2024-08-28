@@ -1,4 +1,45 @@
 ---
-title: 'Introduction'
-description: 'This section contains detailed API specs for interacting with our API. If you need help setting up an API key or making your first request, see the Quick Start section.'
+title: 'Quickstart'
+description: 'Get started with the Anaphero API in minutes'
 ---
+
+## Setup your development environment
+
+This section will walk you through configuring your API key and triggering your first task.
+
+### Set up your API key
+
+<AccordionGroup>
+  <Accordion icon='key' title='Get your API key'>
+    During your onboarding process, you should have received your developer API
+    key via secure sharing. It should look something like this: ```prod_api_5394gcf5-77ec-4c1d-87b7-dddc75909462```
+
+    If you do not have an API key or need help accessing
+    it, please reach out to dev@anaphero.com
+
+  </Accordion>
+  
+  <Accordion icon='code' title='Sending your first request'>
+    The base URL for the API is: ```https://api.anaphero.com/v1```. You can test out your connection by sending the following request:
+
+    ```GET https://api.anaphero.com/v1/health```
+
+    You should see a response that looks like:
+    ```[200] {"message": "healthy"}```
+
+  </Accordion>
+</AccordionGroup>
+
+### Using protected routes
+
+Most requests require you to set your authentication token in the `Authorization` header. You can do this by adding an `Authorization` header and setting the value to `Bearer <your_auth_token>`.
+
+Here is an example of a request that will list all of the recent call records for your organization:
+
+`GET https://api.anaphero.com/v1/call`
+
+`Authorization: Bearer prod_api_5394gcf5-77ec-4c1d-87b7-dddc75909462`
+
+```
+
+```

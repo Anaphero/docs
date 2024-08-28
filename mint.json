@@ -33,18 +33,7 @@
       "pages": ["introduction", "quickstart"]
     },
     {
-      "group": "Essentials",
-      "pages": [
-        "essentials/Task Types",
-        "essentials/How Task Scheduling Works",
-        "essentials/Getting Task Results",
-        "essentials/Additional Observability",
-        "essentials/HIPAA Compliance and BAAs",
-        "essentials/Obtaining Communication Permissions from Patients"
-      ]
-    },
-    {
-      "group": "API Documentation",
+      "group": "Quickstart",
       "pages": ["api-reference/introduction"]
     },
     {
@@ -52,29 +41,15 @@
       "pages": ["api-reference/health/get"]
     },
     {
-      "group": "Task Definitions",
-      "pages": [
-        "api-reference/task-definitions/get",
-        "api-reference/task-definitions/get-single"
-      ]
+      "group": "Referral Workflow",
+      "pages": ["api-reference/workflow/referral/create"]
     },
     {
       "group": "Call",
-      "pages": [
-        "api-reference/call/get",
-        "api-reference/call/get-single",
-        "api-reference/call/create",
-        "api-reference/call/delete"
-      ]
-    },
-    {
-      "group": "Phone Number",
-      "pages": ["api-reference/phone/get"]
+      "pages": ["api-reference/call/get"]
     }
   ],
   "footerSocials": {
-    "twitter": "https://twitter.com/mintlify",
-    "github": "https://github.com/mintlify",
-    "linkedin": "https://www.linkedin.com/company/mintsearch"
+    "linkedin": "https://www.linkedin.com/company/98996497"
   }
 }
