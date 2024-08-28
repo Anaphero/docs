@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://anaphero.ngrok.io/v1"
+      "url": "https://api.anaphero.com/v1"
     }
   ],
   "security": [
