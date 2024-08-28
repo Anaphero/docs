@@ -310,7 +310,6 @@
                   "referralReason",
                   "referralType",
                   "referredToLocationId",
-                  "referredToProviderId",
                   "patientData"
                 ]
               }
