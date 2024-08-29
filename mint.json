@@ -51,7 +51,11 @@
     },
     {
       "group": "Referral Workflow",
-      "pages": ["api-reference/workflow/referral/create"]
+      "pages": [
+        "api-reference/workflow/referral/list",
+
+        "api-reference/workflow/referral/create"
+      ]
     }
   ],
   "footerSocials": {

@@ -331,6 +331,27 @@
             "description": "Bad request"
           }
         }
+      },
+      "get": {
+        "description": "Returns all referrals available to your organization",
+        "responses": {
+          "200": {
+            "description": "List of Referrals",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Referral"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
       }
     },
     "/phone-number": {
@@ -679,6 +700,114 @@
           },
           "message": {
             "type": "string"
+          }
+        }
+      },
+      "Referral": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "organization_id": {
+            "type": "integer"
+          },
+          "patient_id": {
+            "type": "integer"
+          },
+          "workflow_id": {
+            "type": "integer"
+          },
+          "referral_source": {
+            "type": "string"
+          },
+          "date_referral_received_by_clinic": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "appointment_id": {
+            "type": "integer",
+            "nullable": true
+          },
+          "referral_reason": {
+            "type": "string"
+          },
+          "referring_provider": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "referred_to_location_id": {
+            "type": "string"
+          },
+          "referred_to_provider_id": {
+            "type": "string"
+          },
+          "appointment": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "created_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "patient_id": {
+                "type": "integer"
+              },
+              "location_id": {
+                "type": "string"
+              },
+              "provider_id": {
+                "type": "string"
+              },
+              "appointment_type": {
+                "type": "string"
+              },
+              "appointment_datetime": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          },
+          "patient": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "mrn": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "last_name": {
+                "type": "string"
+              },
+              "first_name": {
+                "type": "string"
+              },
+              "cell_number": {
+                "type": "string"
+              },
+              "home_number": {
+                "type": "string"
+              },
+              "date_of_birth": {
+                "type": "string",
+                "format": "date"
+              }
+            }
           }
         }
       }
