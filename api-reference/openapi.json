@@ -228,13 +228,14 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "workflowDefinitionId": {
-                    "type": "integer"
-                  },
                   "documentUrl": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "referringProviderFirstName": {
                     "type": "string"
                   },
-                  "referringProvider": {
+                  "referringProviderLastName": {
                     "type": "string"
                   },
                   "referralReason": {
@@ -242,13 +243,15 @@
                   },
                   "referralType": {
                     "type": "string",
-                    "enum": ["pulmonology", "sleep"]
+                    "enum": ["sleep", "pulmonology"]
                   },
                   "referredToLocationId": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["2"]
                   },
                   "referredToProviderId": {
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["77562", "74570", "75929"]
                   },
                   "patientData": {
                     "type": "object",
@@ -267,14 +270,14 @@
                         "type": "string"
                       },
                       "dob": {
-                        "type": "string"
+                        "type": "string",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
                       },
                       "cellNumber": {
                         "type": "string"
                       },
                       "homeNumber": {
-                        "type": "string",
-                        "nullable": true
+                        "type": "string"
                       },
                       "email": {
                         "type": "string"
@@ -295,18 +298,16 @@
                     },
                     "required": [
                       "sex",
+                      "homeNumber",
                       "firstName",
                       "lastName",
-                      "dob",
-                      "cellNumber",
-                      "email"
+                      "dob"
                     ]
                   }
                 },
                 "required": [
-                  "workflowDefinitionId",
-                  "documentUrl",
-                  "referringProvider",
+                  "referringProviderFirstName",
+                  "referringProviderLastName",
                   "referralReason",
                   "referralType",
                   "referredToLocationId",
