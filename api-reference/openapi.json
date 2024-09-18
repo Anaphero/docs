@@ -312,9 +312,6 @@
                   }
                 },
                 "required": [
-                  "referringProviderFirstName",
-                  "referringProviderLastName",
-                  "referralReason",
                   "referralType",
                   "referredToLocationId",
                   "patientData"
