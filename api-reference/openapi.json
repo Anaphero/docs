@@ -233,10 +233,12 @@
                     "format": "uri"
                   },
                   "referringProviderFirstName": {
-                    "type": "string"
+                    "type": "string",
+                    "nullable": true
                   },
                   "referringProviderLastName": {
-                    "type": "string"
+                    "type": "string",
+                    "nullable": true
                   },
                   "referralReason": {
                     "type": "string"
@@ -261,7 +263,8 @@
                       },
                       "sex": {
                         "type": "string",
-                        "enum": ["male", "female", "other"]
+                        "enum": ["male", "female", "other"],
+                        "nullable": true
                       },
                       "firstName": {
                         "type": "string"
@@ -280,7 +283,8 @@
                         "type": "string"
                       },
                       "email": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                       },
                       "insuranceName": {
                         "type": "string",
