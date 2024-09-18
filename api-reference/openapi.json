@@ -277,7 +277,8 @@
                         "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
                       },
                       "cellNumber": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                       },
                       "homeNumber": {
                         "type": "string"
