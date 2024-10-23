@@ -41,54 +41,6 @@
         }
       }
     },
-    "/task-definition": {
-      "get": {
-        "description": "Returns all task definitions available to your organization",
-        "responses": {
-          "200": {
-            "description": "Task definition",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/TaskDefinition"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/task-definition-single/{taskId}": {
-      "get": {
-        "description": "Returns all task definitions available to your organization",
-        "parameters": [
-          {
-            "name": "taskId",
-            "in": "path",
-            "description": "ID of the task you wish to retrieve",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Task definition",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/TaskDefinition"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/call": {
       "get": {
         "description": "Returns all calls available to your organization",
@@ -164,6 +116,120 @@
         }
       }
     },
+    "/assistant/{assistantId}": {
+      "get": {
+        "description": "Returns a single assistant based on the assistantId supplied",
+        "parameters": [
+          {
+            "name": "assistantId",
+            "in": "path",
+            "description": "ID of assistant to return",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assistant response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assistant"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "patch": {
+        "description": "Updates an existing assistant",
+        "parameters": [
+          {
+            "name": "assistantId",
+            "in": "path",
+            "description": "ID of assistant to update",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Assistant properties to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAssistant"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Assistant updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assistant"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Assistant not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+
+      "delete": {
+        "description": "Deletes a single assistant based on the assistantId supplied",
+        "parameters": [
+          {
+            "name": "assistantId",
+            "in": "path",
+            "description": "ID of assistant to delete",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Assistant deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assistant"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+
     "/call/{callId}": {
       "get": {
         "description": "Returns a single call based on the callId supplied",
@@ -429,14 +495,31 @@
         }
       }
     },
+    "/phone-number/{id}": {
+      "get": {
+        "description": "Returns a single phone number based on the id supplied",
+        "responses": {
+          "200": {
+            "description": "Phone number response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhoneNumber"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/phone-number": {
       "get": {
-        "description": "Returns all phone numbers available to your organization",
+        "description": "Lists all phone numbers available to your organization",
         "parameters": [
           {
-            "name": "number",
+            "name": "assistantId",
             "in": "query",
-            "description": "The phone number to filter by",
+            "description": "Filter phone numbers by assistantId",
             "schema": {
               "type": "string"
             }
@@ -444,7 +527,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Phone number",
+            "description": "List of Phone Numbers",
             "content": {
               "application/json": {
                 "schema": {
@@ -568,72 +651,183 @@
           }
         }
       }
+    },
+    "/assistant": {
+      "get": {
+        "description": "Returns all assistants available to your organization",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "The maximum number of results to return. Defaults to 100, maximum is 1000.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "created_at_ge",
+            "in": "query",
+            "description": "Filter assistants created on or after this date (ISO 8601 format)",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "created_at_le",
+            "in": "query",
+            "description": "Filter assistants created on or before this date (ISO 8601 format)",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Assistants",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Assistant"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "description": "Creates a new assistant",
+        "requestBody": {
+          "description": "Assistant to create",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssistant"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Assistant created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Assistant"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
+
   "components": {
     "schemas": {
+      "Assistant": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "description": "The unique identifier for the assistant"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name of the assistant"
+          },
+          "organization_id": {
+            "type": "integer",
+            "description": "The identifier of the organization the assistant belongs to"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the assistant was created"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The timestamp when the assistant was last updated"
+          },
+          "language_model": {
+            "type": "object",
+            "description": "The language model configuration for the assistant"
+          },
+          "voice_model": {
+            "type": "object",
+            "description": "The voice model configuration for the assistant"
+          },
+          "first_message": {
+            "type": "string",
+            "description": "The initial message the assistant will use"
+          },
+          "max_duration_seconds": {
+            "type": "integer",
+            "description": "The maximum duration in seconds for the assistant's interaction"
+          },
+          "voicemail_message": {
+            "type": "string",
+            "description": "The message the assistant will leave as a voicemail"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "organization_id",
+          "created_at",
+          "updated_at"
+        ]
+      },
       "PhoneNumber": {
         "required": ["phoneNumberId", "number", "telephonyProvider"],
         "type": "object",
         "properties": {
-          "phoneNumberId": {
+          "id": {
             "description": "The unique id for the phone number",
+            "type": "integer"
+          },
+          "organization_id": {
+            "description": "The id of the organization the phone number belongs to",
+            "type": "integer"
+          },
+          "name": {
+            "description": "The human-friendly name of the phone number",
             "type": "string"
+          },
+          "assistant_id": {
+            "description": "The id of the assistant that the phone number is associated with for inbound calls",
+            "type": "integer"
           },
           "number": {
             "description": "The phone number with country code",
             "type": "string"
-          },
-          "telephonyProvider": {
-            "description": "The telephony provider for the phone number",
-            "type": "string"
-          }
-        }
-      },
-      "TaskDefinition": {
-        "type": "object",
-        "properties": {
-          "taskId": {
-            "description": "The unique id for the task definition",
-            "type": "string"
-          },
-          "taskName": {
-            "description": "The human-friendly name of the task",
-            "type": "string"
-          },
-          "taskDescription": {
-            "description": "The description of the task and what it does",
-            "type": "string"
-          },
-          "taskParameters": {
-            "description": "The parameters that will be passed to the task. Each task has its own parameters that help customze the task's execution",
-            "type": "object"
-          },
-          "maxDuration": {
-            "description": "The maximum duration in seconds that the task can run for",
-            "type": "integer"
-          },
-          "transcriber": {
-            "description": "The transcriber configuration used for this task definition",
-            "type": "object"
-          },
-          "voice": {
-            "description": "The voice configuration used for this task definition",
-            "type": "object"
-          },
-          "languageModel": {
-            "description": "The language model configuration for this task definition",
-            "type": "object"
-          },
-          "createdAt": {
-            "type": "string",
-            "format": "date-time",
-            "description": "The date and time the task definition was created"
-          },
-          "updatedAt": {
-            "type": "string",
-            "format": "date-time",
-            "description": "The date and time the task definition was last updated"
           }
         }
       },
@@ -674,6 +868,10 @@
         "properties": {
           "id": {
             "description": "The unique id for the call",
+            "type": "integer"
+          },
+          "assistant_id": {
+            "description": "The id of the assistant that handled the call",
             "type": "integer"
           },
           "started_at": {
@@ -733,6 +931,7 @@
           }
         }
       },
+
       "Plant": {
         "required": ["name"],
         "type": "object",
@@ -778,6 +977,7 @@
           }
         }
       },
+
       "Referral": {
         "type": "object",
         "properties": {
@@ -883,6 +1083,65 @@
                 "format": "date"
               }
             }
+          }
+        }
+      },
+      "UpdateAssistant": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The updated name of the assistant"
+          },
+          "language_model": {
+            "type": "object",
+            "description": "The updated language model configuration for the assistant"
+          },
+          "voice_model": {
+            "type": "object",
+            "description": "The updated voice model configuration for the assistant"
+          },
+          "first_message": {
+            "type": "string",
+            "description": "The updated initial message the assistant will use"
+          },
+          "max_duration_seconds": {
+            "type": "integer",
+            "description": "The updated maximum duration in seconds for the assistant's interaction"
+          },
+          "voicemail_message": {
+            "type": "string",
+            "description": "The updated message the assistant will leave as a voicemail"
+          }
+        }
+      },
+      "CreateAssistant": {
+        "type": "object",
+        "required": ["name", "languageModel", "voiceModel"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the assistant"
+          },
+          "language_model": {
+            "type": "object",
+            "description": "The language model configuration for the assistant"
+          },
+          "voice_model": {
+            "type": "object",
+            "description": "The voice model configuration for the assistant"
+          },
+          "first_message": {
+            "type": "string",
+            "description": "The initial message the assistant will use"
+          },
+          "max_duration_seconds": {
+            "type": "integer",
+            "description": "The maximum duration in seconds for the assistant's interaction"
+          },
+          "voicemail_message": {
+            "type": "string",
+            "description": "The message the assistant will leave as a voicemail"
           }
         }
       }

@@ -41,16 +41,33 @@
       "pages": ["api-reference/health/get"]
     },
     {
-      "group": "Call",
+      "group": "Assistants",
       "pages": [
-        "api-reference/call/get",
+        "api-reference/assistant/get-single",
+        "api-reference/assistant/get",
+        "api-reference/assistant/create",
+        "api-reference/assistant/update",
+        "api-reference/assistant/delete"
+      ]
+    },
+    {
+      "group": "Calls",
+      "pages": [
         "api-reference/call/get-single",
+        "api-reference/call/get",
         "api-reference/call/create",
         "api-reference/call/delete"
       ]
     },
     {
-      "group": "Referral Workflow",
+      "group": "Phone Numbers",
+      "pages": [
+        "api-reference/phone-number/get",
+        "api-reference/phone-number/list"
+      ]
+    },
+    {
+      "group": "Referral Management",
       "pages": [
         "api-reference/workflow/referral/list",
 
