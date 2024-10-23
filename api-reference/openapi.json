@@ -855,11 +855,6 @@
           "taskParameters": {
             "description": "Any override setting you would like to pass into the assistant configuration.",
             "type": "object"
-          },
-          "scheduledDatetime": {
-            "description": "The date and time the call should be made. Leave blank to queue the call immediately",
-            "type": "string",
-            "format": "date-time"
           }
         }
       },
