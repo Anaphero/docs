@@ -776,11 +776,11 @@
             "format": "date-time",
             "description": "The timestamp when the assistant was last updated"
           },
-          "language_model": {
+          "model": {
             "type": "object",
             "description": "The language model configuration for the assistant"
           },
-          "voice_model": {
+          "voice": {
             "type": "object",
             "description": "The voice model configuration for the assistant"
           },
@@ -795,6 +795,18 @@
           "voicemail_message": {
             "type": "string",
             "description": "The message the assistant will leave as a voicemail"
+          },
+          "webhook_url": {
+            "type": "string",
+            "description": "The URL the assistant will send the end of call report to"
+          },
+          "is_webhook_secret_set": {
+            "type": "boolean",
+            "description": "Whether a secret is set for the webhook"
+          },
+          "analysis_plan": {
+            "type": "object",
+            "description": "The analysis plan for the assistant"
           }
         },
         "required": [
@@ -840,19 +852,19 @@
             "type": "string",
             "maxLength": 50
           },
-          "assistantId": {
+          "assistant_id": {
             "description": "The id of the assistant to use for the call",
             "type": "string"
           },
-          "sourcePhoneNumberId": {
+          "source_phone_number_id": {
             "description": "The phoneNumberId of the phone number that will be used to make the call",
             "type": "string"
           },
-          "destinationPhoneNumber": {
+          "destination_phone_number_id": {
             "description": "The phoneNumberId of the number you would like to call",
             "type": "string"
           },
-          "taskParameters": {
+          "task_parameters": {
             "description": "Any override setting you would like to pass into the assistant configuration.",
             "type": "object"
           }
@@ -1088,11 +1100,11 @@
             "type": "string",
             "description": "The updated name of the assistant"
           },
-          "language_model": {
+          "model": {
             "type": "object",
             "description": "The updated language model configuration for the assistant"
           },
-          "voice_model": {
+          "voice": {
             "type": "object",
             "description": "The updated voice model configuration for the assistant"
           },
@@ -1107,22 +1119,30 @@
           "voicemail_message": {
             "type": "string",
             "description": "The updated message the assistant will leave as a voicemail"
+          },
+          "webhook_url": {
+            "type": "string",
+            "description": "The updated URL the assistant will send the end of call report to"
+          },
+          "analysis_plan": {
+            "type": "object",
+            "description": "The updated analysis plan for the assistant"
           }
         }
       },
       "CreateAssistant": {
         "type": "object",
-        "required": ["name", "languageModel", "voiceModel"],
+        "required": ["name", "organization_id"],
         "properties": {
           "name": {
             "type": "string",
             "description": "The name of the assistant"
           },
-          "language_model": {
+          "model": {
             "type": "object",
             "description": "The language model configuration for the assistant"
           },
-          "voice_model": {
+          "voice": {
             "type": "object",
             "description": "The voice model configuration for the assistant"
           },
@@ -1137,6 +1157,14 @@
           "voicemail_message": {
             "type": "string",
             "description": "The message the assistant will leave as a voicemail"
+          },
+          "webhook_url": {
+            "type": "string",
+            "description": "The URL the assistant will send the end of call report to"
+          },
+          "analysis_plan": {
+            "type": "object",
+            "description": "The analysis plan for the assistant"
           }
         }
       }
