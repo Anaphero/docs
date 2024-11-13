@@ -1,11 +1,11 @@
 {
   "$schema": "https://mintlify.com/schema.json",
-  "name": "Anaphero API",
+  "name": "Clarion API",
   "logo": {
-    "dark": "https://d2d1vpa6c3q6ni.cloudfront.net/logo-white.png",
-    "light": "https://d2d1vpa6c3q6ni.cloudfront.net/logo-with-name.png"
+    "dark": "https://d2d1vpa6c3q6ni.cloudfront.net/clarion-logo-dark.png",
+    "light": "https://d2d1vpa6c3q6ni.cloudfront.net/clarion-logo-light.png"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/logo/clarion-favicon.svg",
   "colors": {
     "primary": "#0D9373",
     "light": "#07C983",

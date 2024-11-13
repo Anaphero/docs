@@ -1128,7 +1128,7 @@
       },
       "CreateAssistant": {
         "type": "object",
-        "required": ["name"],
+        "required": ["name", "model"],
         "properties": {
           "name": {
             "type": "string",
