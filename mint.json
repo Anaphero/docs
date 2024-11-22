@@ -51,7 +51,6 @@
         "api-reference/assistant/delete"
       ]
     },
-
     {
       "group": "Calls",
       "pages": [
@@ -59,6 +58,16 @@
         "api-reference/call/get",
         "api-reference/call/create",
         "api-reference/call/delete"
+      ]
+    },
+    {
+      "group": "Tools",
+      "pages": [
+        "api-reference/tool/get",
+        "api-reference/tool/list",
+        "api-reference/tool/create",
+        "api-reference/tool/update",
+        "api-reference/tool/delete"
       ]
     },
     {

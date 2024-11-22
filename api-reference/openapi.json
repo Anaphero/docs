@@ -746,11 +746,752 @@
           }
         }
       }
+    },
+    "/tool": {
+      "get": {
+        "operationId": "ToolController_findAll",
+        "summary": "List Tools",
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "oneOf": [
+                      {
+                        "$ref": "#/components/schemas/FunctionTool",
+                        "title": "FunctionTool"
+                      }
+                    ],
+                    "discriminator": {
+                      "propertyName": "type",
+                      "mapping": {
+                        "function": "#/components/schemas/FunctionTool"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "ToolController_create",
+        "summary": "Create Tool",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "$ref": "#/components/schemas/CreateFunctionToolDTO",
+                    "title": "FunctionTool"
+                  }
+                ],
+                "discriminator": {
+                  "propertyName": "type",
+                  "mapping": {
+                    "function": "#/components/schemas/CreateFunctionToolDTO"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/FunctionTool",
+                      "title": "FunctionTool"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "type",
+                    "mapping": {
+                      "function": "#/components/schemas/FunctionTool"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tool/{id}": {
+      "get": {
+        "operationId": "ToolController_findOne",
+        "summary": "Get Tool",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/FunctionTool",
+                      "title": "FunctionTool"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "type",
+                    "mapping": {
+                      "function": "#/components/schemas/FunctionTool"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "operationId": "ToolController_update",
+        "summary": "Update Tool",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UpdateToolDTO" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/FunctionTool",
+                      "title": "FunctionTool"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "type",
+                    "mapping": {
+                      "function": "#/components/schemas/FunctionTool"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "operationId": "ToolController_remove",
+        "summary": "Delete Tool",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/FunctionTool",
+                      "title": "FunctionTool"
+                    }
+                  ],
+                  "discriminator": {
+                    "propertyName": "type",
+                    "mapping": {
+                      "function": "#/components/schemas/FunctionTool"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
 
   "components": {
     "schemas": {
+      "CreateFunctionToolDTO": {
+        "type": "object",
+        "properties": {
+          "async": {
+            "type": "boolean",
+            "description": "This determines if the tool is async.\n\nIf async, the assistant will move forward without waiting for your server to respond. This is useful if you just want to trigger something on your server.\n\nIf sync, the assistant will wait for your server to respond. This is useful if want assistant to respond with the result from your server.\n\nDefaults to synchronous (`false`).",
+            "example": false
+          },
+          "messages": {
+            "type": "array",
+            "description": "These are the messages that will be spoken to the user as the tool is running.\n\nFor some tools, this is auto-filled based on special fields like `tool.destinations`. For others like the function tool, these can be custom configured.",
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/components/schemas/ToolMessageStart",
+                  "title": "ToolMessageStart"
+                },
+                {
+                  "$ref": "#/components/schemas/ToolMessageComplete",
+                  "title": "ToolMessageComplete"
+                },
+                {
+                  "$ref": "#/components/schemas/ToolMessageFailed",
+                  "title": "ToolMessageFailed"
+                },
+                {
+                  "$ref": "#/components/schemas/ToolMessageDelayed",
+                  "title": "ToolMessageDelayed"
+                }
+              ]
+            }
+          },
+          "type": {
+            "type": "string",
+            "enum": ["function"],
+            "description": "The type of tool. \"function\" for Function tool."
+          },
+          "function": {
+            "description": "This is the function definition of the tool.\n\nFor `endCall`, `transferCall`, and `dtmf` tools, this is auto-filled based on tool-specific fields like `tool.destinations`. But, even in those cases, you can provide a custom function definition for advanced use cases.\n\nAn example of an advanced use case is if you want to customize the message that's spoken for `endCall` tool. You can specify a function where it returns an argument \"reason\". Then, in `messages` array, you can have many \"request-complete\" messages. One of these messages will be triggered if the `messages[].conditions` matches the \"reason\" argument.",
+            "allOf": [{ "$ref": "#/components/schemas/OpenAIFunction" }]
+          }
+        },
+        "required": ["type"]
+      },
+      "UpdateToolDTO": {
+        "type": "object",
+        "properties": {
+          "async": {
+            "type": "boolean",
+            "description": "This determines if the tool is async.\n\nIf async, the assistant will move forward without waiting for your server to respond. This is useful if you just want to trigger something on your server.\n\nIf sync, the assistant will wait for your server to respond. This is useful if want assistant to respond with the result from your server.\n\nDefaults to synchronous (`false`).",
+            "example": false
+          },
+
+          "function": {
+            "description": "This is the function definition of the tool.\n\nFor `endCall`, `transferCall`, and `dtmf` tools, this is auto-filled based on tool-specific fields like `tool.destinations`. But, even in those cases, you can provide a custom function definition for advanced use cases.\n\nAn example of an advanced use case is if you want to customize the message that's spoken for `endCall` tool. You can specify a function where it returns an argument \"reason\". Then, in `messages` array, you can have many \"request-complete\" messages. One of these messages will be triggered if the `messages[].conditions` matches the \"reason\" argument.",
+            "allOf": [{ "$ref": "#/components/schemas/OpenAIFunction" }]
+          }
+        }
+      },
+      "TextContent": {
+        "type": "object",
+        "properties": {
+          "type": { "type": "string", "enum": ["text"] },
+          "text": { "type": "string" },
+          "language": {
+            "type": "string",
+            "enum": [
+              "aa",
+              "ab",
+              "ae",
+              "af",
+              "ak",
+              "am",
+              "an",
+              "ar",
+              "as",
+              "av",
+              "ay",
+              "az",
+              "ba",
+              "be",
+              "bg",
+              "bh",
+              "bi",
+              "bm",
+              "bn",
+              "bo",
+              "br",
+              "bs",
+              "ca",
+              "ce",
+              "ch",
+              "co",
+              "cr",
+              "cs",
+              "cu",
+              "cv",
+              "cy",
+              "da",
+              "de",
+              "dv",
+              "dz",
+              "ee",
+              "el",
+              "en",
+              "eo",
+              "es",
+              "et",
+              "eu",
+              "fa",
+              "ff",
+              "fi",
+              "fj",
+              "fo",
+              "fr",
+              "fy",
+              "ga",
+              "gd",
+              "gl",
+              "gn",
+              "gu",
+              "gv",
+              "ha",
+              "he",
+              "hi",
+              "ho",
+              "hr",
+              "ht",
+              "hu",
+              "hy",
+              "hz",
+              "ia",
+              "id",
+              "ie",
+              "ig",
+              "ii",
+              "ik",
+              "io",
+              "is",
+              "it",
+              "iu",
+              "ja",
+              "jv",
+              "ka",
+              "kg",
+              "ki",
+              "kj",
+              "kk",
+              "kl",
+              "km",
+              "kn",
+              "ko",
+              "kr",
+              "ks",
+              "ku",
+              "kv",
+              "kw",
+              "ky",
+              "la",
+              "lb",
+              "lg",
+              "li",
+              "ln",
+              "lo",
+              "lt",
+              "lu",
+              "lv",
+              "mg",
+              "mh",
+              "mi",
+              "mk",
+              "ml",
+              "mn",
+              "mr",
+              "ms",
+              "mt",
+              "my",
+              "na",
+              "nb",
+              "nd",
+              "ne",
+              "ng",
+              "nl",
+              "nn",
+              "no",
+              "nr",
+              "nv",
+              "ny",
+              "oc",
+              "oj",
+              "om",
+              "or",
+              "os",
+              "pa",
+              "pi",
+              "pl",
+              "ps",
+              "pt",
+              "qu",
+              "rm",
+              "rn",
+              "ro",
+              "ru",
+              "rw",
+              "sa",
+              "sc",
+              "sd",
+              "se",
+              "sg",
+              "si",
+              "sk",
+              "sl",
+              "sm",
+              "sn",
+              "so",
+              "sq",
+              "sr",
+              "ss",
+              "st",
+              "su",
+              "sv",
+              "sw",
+              "ta",
+              "te",
+              "tg",
+              "th",
+              "ti",
+              "tk",
+              "tl",
+              "tn",
+              "to",
+              "tr",
+              "ts",
+              "tt",
+              "tw",
+              "ty",
+              "ug",
+              "uk",
+              "ur",
+              "uz",
+              "ve",
+              "vi",
+              "vo",
+              "wa",
+              "wo",
+              "xh",
+              "yi",
+              "yue",
+              "yo",
+              "za",
+              "zh",
+              "zu"
+            ]
+          }
+        },
+        "required": ["type", "text", "language"]
+      },
+      "ToolMessageStart": {
+        "type": "object",
+        "properties": {
+          "contents": {
+            "type": "array",
+            "description": "This is an alternative to the `content` property. It allows to specify variants of the same content, one per language.\n\nUsage:\n- If your assistants are multilingual, you can provide content for each language.\n- If you don't provide content for a language, the first item in the array will be automatically translated to the active language at that moment.\n\nThis will override the `content` property.",
+            "items": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/TextContent", "title": "Text" }
+              ]
+            }
+          },
+          "type": {
+            "type": "string",
+            "enum": ["request-start"],
+            "description": "This message is triggered when the tool call starts.\n\nThis message is never triggered for async tools.\n\nIf this message is not provided, one of the default filler messages \"Hold on a sec\", \"One moment\", \"Just a sec\", \"Give me a moment\" or \"This'll just take a sec\" will be used."
+          },
+          "content": {
+            "type": "string",
+            "description": "This is the content that the assistant says when this message is triggered.",
+            "maxLength": 1000
+          },
+          "conditions": {
+            "description": "This is an optional array of conditions that the tool call arguments must meet in order for this message to be triggered.",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Condition" }
+          }
+        },
+        "required": ["type"]
+      },
+      "Condition": {
+        "type": "object",
+        "properties": {
+          "operator": {
+            "type": "string",
+            "description": "This is the operator you want to use to compare the parameter and value.",
+            "enum": ["eq", "neq", "gt", "gte", "lt", "lte"]
+          },
+          "param": {
+            "type": "string",
+            "description": "This is the name of the parameter that you want to check.",
+            "maxLength": 1000
+          },
+          "value": {
+            "type": "object",
+            "description": "This is the value you want to compare against the parameter.",
+            "maxLength": 1000
+          }
+        },
+        "required": ["operator", "param", "value"]
+      },
+      "JsonSchema": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "This is the type of output you'd like.\n\n`string`, `number`, `integer`, `boolean` are the primitive types and should be obvious.\n\n`array` and `object` are more interesting and quite powerful. They allow you to define nested structures.\n\nFor `array`, you can define the schema of the items in the array using the `items` property.\n\nFor `object`, you can define the properties of the object using the `properties` property.",
+            "enum": [
+              "string",
+              "number",
+              "integer",
+              "boolean",
+              "array",
+              "object"
+            ]
+          },
+          "items": {
+            "type": "object",
+            "description": "This is required if the type is \"array\". This is the schema of the items in the array.\n\nThis is of type JsonSchema. However, Swagger doesn't support circular references."
+          },
+          "properties": {
+            "type": "object",
+            "description": "This is required if the type is \"object\". This specifies the properties of the object.\n\nThis is a map of string to JsonSchema. However, Swagger doesn't support circular references."
+          },
+          "description": {
+            "type": "string",
+            "description": "This is the description to help the model understand what it needs to output."
+          },
+          "required": {
+            "description": "This is a list of properties that are required.\n\nThis only makes sense if the type is \"object\".",
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["type"]
+      },
+      "ToolMessageComplete": {
+        "type": "object",
+        "properties": {
+          "contents": {
+            "type": "array",
+            "description": "This is an alternative to the `content` property. It allows to specify variants of the same content, one per language.\n\nUsage:\n- If your assistants are multilingual, you can provide content for each language.\n- If you don't provide content for a language, the first item in the array will be automatically translated to the active language at that moment.\n\nThis will override the `content` property.",
+            "items": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/TextContent", "title": "Text" }
+              ]
+            }
+          },
+          "type": {
+            "type": "string",
+            "description": "This message is triggered when the tool call is complete.\n\nThis message is triggered immediately without waiting for your server to respond for async tool calls.\n\nIf this message is not provided, the model will be requested to respond.\n\nIf this message is provided, only this message will be spoken and the model will not be requested to come up with a response. It's an exclusive OR.",
+            "enum": ["request-complete"]
+          },
+          "role": {
+            "type": "string",
+            "description": "This is optional and defaults to \"assistant\".\n\nWhen role=assistant, `content` is said out loud.\n\nWhen role=system, `content` is passed to the model in a system message. Example:\n    system: default one\n    assistant:\n    user:\n    assistant:\n    user:\n    assistant:\n    user:\n    assistant: tool called\n    tool: your server response\n    <--- system prompt as hint\n    ---> model generates response which is spoken\nThis is useful when you want to provide a hint to the model about what to say next.",
+            "enum": ["assistant", "system"]
+          },
+          "endCallAfterSpokenEnabled": {
+            "type": "boolean",
+            "description": "This is an optional boolean that if true, the call will end after the message is spoken. Default is false.\n\nThis is ignored if `role` is set to `system`.\n\n@default false",
+            "example": false
+          },
+          "content": {
+            "type": "string",
+            "description": "This is the content that the assistant says when this message is triggered.",
+            "maxLength": 1000
+          },
+          "conditions": {
+            "description": "This is an optional array of conditions that the tool call arguments must meet in order for this message to be triggered.",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Condition" }
+          }
+        },
+        "required": ["type"]
+      },
+      "ToolMessageFailed": {
+        "type": "object",
+        "properties": {
+          "contents": {
+            "type": "array",
+            "description": "This is an alternative to the `content` property. It allows to specify variants of the same content, one per language.\n\nUsage:\n- If your assistants are multilingual, you can provide content for each language.\n- If you don't provide content for a language, the first item in the array will be automatically translated to the active language at that moment.\n\nThis will override the `content` property.",
+            "items": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/TextContent", "title": "Text" }
+              ]
+            }
+          },
+          "type": {
+            "type": "string",
+            "description": "This message is triggered when the tool call fails.\n\nThis message is never triggered for async tool calls.\n\nIf this message is not provided, the model will be requested to respond.\n\nIf this message is provided, only this message will be spoken and the model will not be requested to come up with a response. It's an exclusive OR.",
+            "enum": ["request-failed"]
+          },
+          "endCallAfterSpokenEnabled": {
+            "type": "boolean",
+            "description": "This is an optional boolean that if true, the call will end after the message is spoken. Default is false.\n\n@default false",
+            "example": false
+          },
+          "content": {
+            "type": "string",
+            "description": "This is the content that the assistant says when this message is triggered.",
+            "maxLength": 1000
+          },
+          "conditions": {
+            "description": "This is an optional array of conditions that the tool call arguments must meet in order for this message to be triggered.",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Condition" }
+          }
+        },
+        "required": ["type"]
+      },
+      "ToolMessageDelayed": {
+        "type": "object",
+        "properties": {
+          "contents": {
+            "type": "array",
+            "description": "This is an alternative to the `content` property. It allows to specify variants of the same content, one per language.\n\nUsage:\n- If your assistants are multilingual, you can provide content for each language.\n- If you don't provide content for a language, the first item in the array will be automatically translated to the active language at that moment.\n\nThis will override the `content` property.",
+            "items": {
+              "oneOf": [
+                { "$ref": "#/components/schemas/TextContent", "title": "Text" }
+              ]
+            }
+          },
+          "type": {
+            "type": "string",
+            "description": "This message is triggered when the tool call is delayed.\n\nThere are the two things that can trigger this message:\n1. The user talks with the assistant while your server is processing the request. Default is \"Sorry, a few more seconds.\"\n2. The server doesn't respond within `timingMilliseconds`.\n\nThis message is never triggered for async tool calls.",
+            "enum": ["request-response-delayed"]
+          },
+          "timingMilliseconds": {
+            "type": "number",
+            "minimum": 100,
+            "maximum": 120000,
+            "example": 1000,
+            "description": "The number of milliseconds to wait for the server response before saying this message."
+          },
+          "content": {
+            "type": "string",
+            "description": "This is the content that the assistant says when this message is triggered.",
+            "maxLength": 1000
+          },
+          "conditions": {
+            "description": "This is an optional array of conditions that the tool call arguments must meet in order for this message to be triggered.",
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Condition" }
+          }
+        },
+        "required": ["type"]
+      },
+      "FunctionTool": {
+        "type": "object",
+        "properties": {
+          "async": {
+            "type": "boolean",
+            "description": "This determines if the tool is async.\n\nIf async, the assistant will move forward without waiting for your server to respond. This is useful if you just want to trigger something on your server.\n\nIf sync, the assistant will wait for your server to respond. This is useful if want assistant to respond with the result from your server.\n\nDefaults to synchronous (`false`).",
+            "example": false
+          },
+
+          "type": {
+            "type": "string",
+            "enum": ["function"],
+            "description": "The type of tool. \"function\" for Function tool."
+          },
+          "id": {
+            "type": "string",
+            "description": "This is the unique identifier for the tool."
+          },
+          "orgId": {
+            "type": "string",
+            "description": "This is the unique identifier for the organization that this tool belongs to."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "This is the ISO 8601 date-time string of when the tool was created."
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "This is the ISO 8601 date-time string of when the tool was last updated."
+          },
+          "function": {
+            "description": "This is the function definition of the tool.\n\nFor `endCall`, `transferCall`, and `dtmf` tools, this is auto-filled based on tool-specific fields like `tool.destinations`. But, even in those cases, you can provide a custom function definition for advanced use cases.\n\nAn example of an advanced use case is if you want to customize the message that's spoken for `endCall` tool. You can specify a function where it returns an argument \"reason\". Then, in `messages` array, you can have many \"request-complete\" messages. One of these messages will be triggered if the `messages[].conditions` matches the \"reason\" argument.",
+            "allOf": [{ "$ref": "#/components/schemas/OpenAIFunction" }]
+          }
+        },
+        "required": ["type", "id", "orgId", "createdAt", "updatedAt"]
+      },
+      "OpenAIFunctionParameters": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "description": "This must be set to 'object'. It instructs the model to return a JSON object containing the function call properties.",
+            "enum": ["object"]
+          },
+          "properties": {
+            "type": "object",
+            "description": "This provides a description of the properties required by the function.\nJSON Schema can be used to specify expectations for each property.\nRefer to [this doc](https://ajv.js.org/json-schema.html#json-data-type) for a comprehensive guide on JSON Schema.",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/JsonSchema"
+            }
+          },
+          "required": {
+            "description": "This specifies the properties that are required by the function.",
+            "type": "array",
+            "items": { "type": "string" }
+          }
+        },
+        "required": ["type", "properties"]
+      },
+      "OpenAIFunction": {
+        "type": "object",
+        "properties": {
+          "strict": {
+            "type": "boolean",
+            "description": "This is a boolean that controls whether to enable strict schema adherence when generating the function call. If set to true, the model will follow the exact schema defined in the parameters field. Only a subset of JSON Schema is supported when strict is true. Learn more about Structured Outputs in the [OpenAI guide](https://openai.com/index/introducing-structured-outputs-in-the-api/).\n\n@default false",
+            "default": false
+          },
+          "name": {
+            "type": "string",
+            "description": "This is the the name of the function to be called.\n\nMust be a-z, A-Z, 0-9, or contain underscores and dashes, with a maximum length of 64.",
+            "maxLength": 64,
+            "pattern": "/^[a-zA-Z0-9_-]{1,64}$/"
+          },
+          "description": {
+            "type": "string",
+            "description": "This is the description of what the function does, used by the AI to choose when and how to call the function.",
+            "maxLength": 1000
+          },
+          "parameters": {
+            "description": "These are the parameters the functions accepts, described as a JSON Schema object.\n\nSee the [OpenAI guide](https://platform.openai.com/docs/guides/function-calling) for examples, and the [JSON Schema reference](https://json-schema.org/understanding-json-schema) for documentation about the format.\n\nOmitting parameters defines a function with an empty parameter list.",
+            "allOf": [
+              { "$ref": "#/components/schemas/OpenAIFunctionParameters" }
+            ]
+          }
+        },
+        "required": ["name"]
+      },
       "Assistant": {
         "type": "object",
         "properties": {
@@ -1149,6 +1890,16 @@
           "analysis_plan": {
             "type": "object",
             "description": "The analysis plan for the assistant"
+          }
+        }
+      },
+      "Tool": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the tool"
           }
         }
       }
