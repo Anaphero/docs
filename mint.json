@@ -15,6 +15,7 @@
       "to": "#07C983"
     }
   },
+  "openapi": ["/api-reference/openapi.json", "/api-reference/vapi.json"],
   "topbarLinks": [
     {
       "name": "Support",
@@ -50,6 +51,7 @@
         "api-reference/assistant/delete"
       ]
     },
+
     {
       "group": "Calls",
       "pages": [
