@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://api.anaphero.com/v1"
+      "url": "https://api.clarionhealth.ai/v1"
     }
   ],
   "security": [
