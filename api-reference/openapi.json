@@ -955,30 +955,6 @@
             "description": "This determines if the tool is async.\n\nIf async, the assistant will move forward without waiting for your server to respond. This is useful if you just want to trigger something on your server.\n\nIf sync, the assistant will wait for your server to respond. This is useful if want assistant to respond with the result from your server.\n\nDefaults to synchronous (`false`).",
             "example": false
           },
-          "messages": {
-            "type": "array",
-            "description": "These are the messages that will be spoken to the user as the tool is running.\n\nFor some tools, this is auto-filled based on special fields like `tool.destinations`. For others like the function tool, these can be custom configured.",
-            "items": {
-              "oneOf": [
-                {
-                  "$ref": "#/components/schemas/ToolMessageStart",
-                  "title": "ToolMessageStart"
-                },
-                {
-                  "$ref": "#/components/schemas/ToolMessageComplete",
-                  "title": "ToolMessageComplete"
-                },
-                {
-                  "$ref": "#/components/schemas/ToolMessageFailed",
-                  "title": "ToolMessageFailed"
-                },
-                {
-                  "$ref": "#/components/schemas/ToolMessageDelayed",
-                  "title": "ToolMessageDelayed"
-                }
-              ]
-            }
-          },
           "type": {
             "type": "string",
             "enum": ["function"],
