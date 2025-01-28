@@ -61,7 +61,7 @@
       ]
     },
     {
-      "group": "Tools",
+      "group": "Tools (Beta)",
       "pages": [
         "api-reference/tool/get",
         "api-reference/tool/list",
