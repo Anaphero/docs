@@ -1672,11 +1672,7 @@
             "description": "The duration of the call in milliseconds",
             "nullable": true
           },
-          "analysis": {
-            "type": "object",
-            "description": "Any analysis performed on the call",
-            "nullable": true
-          },
+
           "summary": {
             "type": "string",
             "description": "A summary of the call",
