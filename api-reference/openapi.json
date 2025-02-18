@@ -1639,6 +1639,7 @@
             "type": "string",
             "description": "The type of call"
           },
+
           "messages": {
             "type": "array",
             "description": "Structured messages representing the events of the conversation",
@@ -1672,7 +1673,10 @@
             "description": "The duration of the call in milliseconds",
             "nullable": true
           },
-
+          "analysis": {
+            "description": "[Beta] Includes custom evaluations and data extractions for the call. Analysis feature is in beta and is not yet generally available.",
+            "allOf": [{ "$ref": "#/components/schemas/Analysis" }]
+          },
           "summary": {
             "type": "string",
             "description": "A summary of the call",
@@ -1682,6 +1686,19 @@
             "type": "string",
             "description": "The outcome of the call",
             "nullable": true
+          }
+        }
+      },
+      "Analysis": {
+        "type": "object",
+        "properties": {
+          "structuredData": {
+            "type": "object",
+            "description": "This is the structured data extracted from the call. "
+          },
+          "successEvaluation": {
+            "type": "string",
+            "description": "This is the evaluation of the call. "
           }
         }
       },
