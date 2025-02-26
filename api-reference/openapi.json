@@ -1686,6 +1686,19 @@
             "type": "string",
             "description": "The outcome of the call",
             "nullable": true
+          },
+          "failure_reason": {
+            "type": "string",
+            "description": "If the call was unsuccessful, this will be the reason why",
+            "nullable": true,
+            "enum": [
+              "declined",
+              "escalated",
+              "requested-callback",
+              "customer-dropped",
+              "assistant-ended",
+              "opt-out"
+            ]
           }
         }
       },
