@@ -1674,7 +1674,7 @@
             "nullable": true
           },
           "analysis": {
-            "description": "[Beta] Includes custom evaluations and data extractions for the call. Analysis feature is in beta and is not yet generally available.",
+            "description": "Includes custom evaluations and data extractions for the call.",
             "allOf": [{ "$ref": "#/components/schemas/Analysis" }]
           },
           "summary": {
@@ -1705,13 +1705,17 @@
       "Analysis": {
         "type": "object",
         "properties": {
-          "structuredData": {
-            "type": "object",
-            "description": "This is the structured data extracted from the call. "
+          "repetition_count": {
+            "type": "integer",
+            "description": "The number of times the user repeated themselves during the call."
           },
-          "successEvaluation": {
-            "type": "string",
-            "description": "This is the evaluation of the call. "
+          "interruption_count": {
+            "type": "integer",
+            "description": "The number of times the user interrupted the AI assistant during the call."
+          },
+          "custom": {
+            "type": "object",
+            "description": "Any custom (customer-specific) metrics associated with the call."
           }
         }
       },
